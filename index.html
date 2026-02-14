@@ -1,29 +1,225 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DN Project Hub</title>
+<title>My Project Hub</title>
+
+<style>
+
+body {
+    font-family: Arial;
+    margin: 0;
+    background-color: #f4fbff;
+    transition: 0.3s;
+}
+
+/* Top bar */
+.header {
+    background-color: #87CEEB;
+    color: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Logo */
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Search */
+.search-box input {
+    padding: 6px;
+    width: 200px;
+}
+
+
+/* Menu */
+.menu {
+    cursor: pointer;
+    font-size: 24px;
+    transition: 0.3s;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    left: -240px;
+    top: 0;
+    width: 220px;
+    height: 100%;
+    background: white;
+    padding: 20px;
+    box-shadow: 2px 0px 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    z-index: 999;
+}
+
+.sidebar a {
+    display: block;
+    margin: 25px 0;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: none;
+    z-index: 998;
+}
+
+/* Main content */
+.container {
+    padding: 20px;
+}
+
+/* Quotes */
+.quote {
+    background: white;
+    padding: 15px;
+    margin : 20px auto;
+    margin-bottom: 20px;
+    text-align: center;
+    border-left: 5px solid skyblue;
+}
+
+/* Project cards */
+.project {
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 6px;
+    box-shadow: 0 0 5px #ccc;
+}
+
+.project img {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    background: #87CEEB;
+    color: white;
+    padding: 8px 12px;
+    margin-top: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+</style>
 </head>
 
 <body>
 
-<h1>Welcome to DN Project Hub</h1>
-<p>Here you can find your innovative project ideas</p>
+<!-- HEADER -->
+<div class="header">
+    <div class="menu" id="menuBtn" onclick="toggleMenu()">☰</div>
+    <div class="logo">My Project Hub</div>
 
-<hr>
+    <div class="search-box">
+        <input type="text" id="search" placeholder="Search projects..." onkeyup="searchProject()">
+    </div>
+</div>
 
-<h2>Projects</h2>
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <h3>Categories</h3>
+    <a href="#" onclick="filterProject('all')">All</a>
+    <a href="#" onclick="filterProject('arduino')">Arduino</a>
+    <a href="#" onclick="filterProject('esp32')">ESP32</a>
+    <a href="#" onclick="filterProject('stm32')">STM32</a>
+</div>
 
-<ul>
+<!-- Overlay -->
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
-<li>
-<a href="pro1.html">Smart Submersible Pump Controller</a>
-</li>
+<!-- MAIN CONTENT -->
+<div class="container">
 
-<li>
-<a href="project2.html">IoT Home Automation</a>
-</li>
+    <div class="quote">“Engineering is solving problems that people didn’t know they had.”</div>
+    <div class="quote">“Build projects. That’s how real learning happens.”</div>
 
-</ul>
+    <!-- Project 1 -->
+    <div class="project" data-category="arduino">
+        <img src="pump.jpg">
+        <h3>Smart Submersible Pump Controller</h3>
+        <p>Arduino based water automation project.</p>
+        <a href="pro1.html" class="btn">View Project</a>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="project" data-category="esp32">
+        <img src="robot.jpg">
+        <h3>Obstacle Avoiding Robot</h3>
+        <p>ESP32 robotic automation.</p>
+        <a href="pro2.html" class="btn">View Project</a>
+    </div>
+
+</div>
+
+<script>
+
+let sidebar = document.getElementById("sidebar");
+let overlay = document.getElementById("overlay");
+let menuBtn = document.getElementById("menuBtn");
+
+/* MENU */
+function toggleMenu() {
+    if (sidebar.style.left === "0px") {
+        closeMenu();
+    } else {
+        sidebar.style.left = "0px";
+        overlay.style.display = "block";
+        menuBtn.innerHTML = "✖";
+    }
+}
+
+function closeMenu() {
+    sidebar.style.left = "-240px";
+    overlay.style.display = "none";
+    menuBtn.innerHTML = "☰";
+}
+
+/* CATEGORY FILTER */
+function filterProject(category) {
+    let projects = document.querySelectorAll(".project");
+
+    projects.forEach(project => {
+        if(category === "all" || project.dataset.category === category){
+            project.style.display = "block";
+        } else {
+            project.style.display = "none";
+        }
+    });
+}
+
+/* SEARCH */
+function searchProject() {
+    let input = document.getElementById("search").value.toLowerCase();
+    let projects = document.querySelectorAll(".project");
+
+    projects.forEach(project => {
+        let text = project.innerText.toLowerCase();
+        project.style.display = text.includes(input) ? "block" : "none";
+    });
+}
+
+
+</script>
 
 </body>
 </html>
